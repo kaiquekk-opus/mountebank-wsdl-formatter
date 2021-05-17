@@ -1,0 +1,36 @@
+{
+  "name": "mountebank-wsdl-formatter",
+  "version": "0.0.1",
+  "author": "Opus Software",
+  "description": "Custom formatter to read a wsdl file on mountebank",
+  "license": "MIT",
+  "main": "./src/formatter.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaiquekk-opus/mountebank-wsdl-formatter"
+  },
+  "scripts": {
+    "test": "node ./node_modules/.bin/eslint **/*.js && node ./node_modules/.bin/_mocha ./test/**/*.js"
+  },
+  "keywords": [
+    "mountebank",
+    "wsdl"
+  ],
+  "dependencies": {
+    "fs-extra": "10.0.0",
+    "soap": "0.38.0",
+    "vkbeautify": "0.99.3"
+  },
+  "devDependencies": {
+    "eslint": "7.26.0",
+    "mocha": "8.4.0"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "package*.json"
+  ],
+  "engines": {
+    "node": ">=10"
+  }
+}
