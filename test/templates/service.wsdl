@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://ws.cdyne.com/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" targetNamespace="http://ws.cdyne.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Validates Credit Cards to ensure proper input. This is a FREE CDYNE service ran off of our secure servers. You may use it as much as you wish. If you would like the code please visit
+&lt;a href="http://wiki.cdyne.com/wiki/index.php?title=Credit_Card_Verification"&gt;our wiki&lt;/a&gt;</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://ws.cdyne.com/">
+      <s:element name="CheckCC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CardNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CheckCCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CheckCCResult" type="tns:ReturnIndicator" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ReturnIndicator">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CardType" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CardValid" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ReturnIndicator" nillable="true" type="tns:ReturnIndicator" />
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="CheckCCSoapIn">
+    <wsdl:part name="parameters" element="tns:CheckCC" />
+  </wsdl:message>
+  <wsdl:message name="CheckCCSoapOut">
+    <wsdl:part name="parameters" element="tns:CheckCCResponse" />
+  </wsdl:message>
+  <wsdl:message name="CheckCCHttpGetIn">
+    <wsdl:part name="CardNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckCCHttpGetOut">
+    <wsdl:part name="Body" element="tns:ReturnIndicator" />
+  </wsdl:message>
+  <wsdl:message name="CheckCCHttpPostIn">
+    <wsdl:part name="CardNumber" type="s:string" />
+  </wsdl:message>
+  <wsdl:message name="CheckCCHttpPostOut">
+    <wsdl:part name="Body" element="tns:ReturnIndicator" />
+  </wsdl:message>
+  <wsdl:portType name="LuhnCheckerSoap">
+    <wsdl:operation name="CheckCC">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enter 4111111111111111 to test a good credit card number.</wsdl:documentation>
+      <wsdl:input message="tns:CheckCCSoapIn" />
+      <wsdl:output message="tns:CheckCCSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="LuhnCheckerHttpGet">
+    <wsdl:operation name="CheckCC">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enter 4111111111111111 to test a good credit card number.</wsdl:documentation>
+      <wsdl:input message="tns:CheckCCHttpGetIn" />
+      <wsdl:output message="tns:CheckCCHttpGetOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="LuhnCheckerHttpPost">
+    <wsdl:operation name="CheckCC">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Enter 4111111111111111 to test a good credit card number.</wsdl:documentation>
+      <wsdl:input message="tns:CheckCCHttpPostIn" />
+      <wsdl:output message="tns:CheckCCHttpPostOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="LuhnCheckerSoap" type="tns:LuhnCheckerSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CheckCC">
+      <soap:operation soapAction="http://ws.cdyne.com/CheckCC" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LuhnCheckerSoap12" type="tns:LuhnCheckerSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CheckCC">
+      <soap12:operation soapAction="http://ws.cdyne.com/CheckCC" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LuhnCheckerHttpGet" type="tns:LuhnCheckerHttpGet">
+    <http:binding verb="GET" />
+    <wsdl:operation name="CheckCC">
+      <http:operation location="/CheckCC" />
+      <wsdl:input>
+        <http:urlEncoded />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="LuhnCheckerHttpPost" type="tns:LuhnCheckerHttpPost">
+    <http:binding verb="POST" />
+    <wsdl:operation name="CheckCC">
+      <http:operation location="/CheckCC" />
+      <wsdl:input>
+        <mime:content type="application/x-www-form-urlencoded" />
+      </wsdl:input>
+      <wsdl:output>
+        <mime:mimeXml part="Body" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="LuhnChecker">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Validates Credit Cards to ensure proper input. This is a FREE CDYNE service ran off of our secure servers. You may use it as much as you wish. If you would like the code please visit
+&lt;a href="http://wiki.cdyne.com/wiki/index.php?title=Credit_Card_Verification"&gt;our wiki&lt;/a&gt;</wsdl:documentation>
+    <wsdl:port name="LuhnCheckerSoap" binding="tns:LuhnCheckerSoap">
+      <soap:address location="https://ws.cdyne.com/creditcardverify/luhnchecker.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LuhnCheckerSoap12" binding="tns:LuhnCheckerSoap12">
+      <soap12:address location="https://ws.cdyne.com/creditcardverify/luhnchecker.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LuhnCheckerHttpGet" binding="tns:LuhnCheckerHttpGet">
+      <http:address location="https://ws.cdyne.com/creditcardverify/luhnchecker.asmx" />
+    </wsdl:port>
+    <wsdl:port name="LuhnCheckerHttpPost" binding="tns:LuhnCheckerHttpPost">
+      <http:address location="https://ws.cdyne.com/creditcardverify/luhnchecker.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
